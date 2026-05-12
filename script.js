@@ -274,20 +274,20 @@ const products = [
     }
 ];
 
-// Categories Data
+// Categories Data with Premium Gradients
 const categories = [
-    { name: "Groceries", icon: "🛒", color: "from-green-400 to-green-600" },
-    { name: "Electronics", icon: "📱", color: "from-blue-400 to-blue-600" },
-    { name: "Computer Accessories", icon: "💻", color: "from-purple-400 to-purple-600" },
-    { name: "Mobile Phones", icon: "📲", color: "from-pink-400 to-pink-600" },
-    { name: "Laptops", icon: "🖥️", color: "from-indigo-400 to-indigo-600" },
-    { name: "T-Shirts", icon: "👕", color: "from-orange-400 to-orange-600" },
-    { name: "Pants", icon: "👖", color: "from-teal-400 to-teal-600" },
-    { name: "Shoes", icon: "👟", color: "from-red-400 to-red-600" },
-    { name: "Headphones", icon: "🎧", color: "from-yellow-400 to-yellow-600" },
-    { name: "Smart Watches", icon: "⌚", color: "from-cyan-400 to-cyan-600" },
-    { name: "Gaming Accessories", icon: "🎮", color: "from-rose-400 to-rose-600" },
-    { name: "Home Appliances", icon: "🏠", color: "from-amber-400 to-amber-600" }
+    { name: "Groceries", icon: "🛒", color: "from-emerald-400 to-emerald-600", gradient: "from-emerald-500 to-teal-500" },
+    { name: "Electronics", icon: "📱", color: "from-blue-400 to-blue-600", gradient: "from-blue-500 to-cyan-500" },
+    { name: "Computer Accessories", icon: "💻", color: "from-purple-400 to-purple-600", gradient: "from-purple-500 to-indigo-500" },
+    { name: "Mobile Phones", icon: "📲", color: "from-pink-400 to-pink-600", gradient: "from-pink-500 to-rose-500" },
+    { name: "Laptops", icon: "🖥️", color: "from-indigo-400 to-indigo-600", gradient: "from-indigo-500 to-purple-500" },
+    { name: "Fashion", icon: "�", color: "from-fuchsia-400 to-fuchsia-600", gradient: "from-fuchsia-500 to-pink-500" },
+    { name: "Shoes", icon: "👟", color: "from-red-400 to-red-600", gradient: "from-red-500 to-orange-500" },
+    { name: "Headphones", icon: "🎧", color: "from-yellow-400 to-yellow-600", gradient: "from-yellow-500 to-amber-500" },
+    { name: "Smart Watches", icon: "⌚", color: "from-cyan-400 to-cyan-600", gradient: "from-cyan-500 to-blue-500" },
+    { name: "Gaming", icon: "🎮", color: "from-violet-400 to-violet-600", gradient: "from-violet-500 to-purple-500" },
+    { name: "Home Appliances", icon: "🏠", color: "from-amber-400 to-amber-600", gradient: "from-amber-500 to-orange-500" },
+    { name: "Beauty", icon: "💄", color: "from-rose-400 to-rose-600", gradient: "from-rose-500 to-pink-500" }
 ];
 
 // State Management
@@ -310,6 +310,7 @@ const cartSubtotal = document.getElementById('cart-subtotal');
 const cartTotal = document.getElementById('cart-total');
 const checkoutBtn = document.getElementById('checkout-btn');
 const categoriesContainer = document.getElementById('categories-container');
+const allCategoriesContainer = document.getElementById('all-categories-container');
 const featuredProductsContainer = document.getElementById('featured-products');
 const trendingProductsContainer = document.getElementById('trending-products');
 const searchInput = document.getElementById('search-input');
@@ -317,6 +318,7 @@ const mobileSearchInput = document.getElementById('mobile-search-input');
 const toastContainer = document.getElementById('toast-container');
 const bottomNavItems = document.querySelectorAll('.bottom-nav-item');
 const backToHomeBtn = document.getElementById('back-to-home');
+const backToHomeFromCategoriesBtn = document.getElementById('back-to-home-from-categories');
 const productDetailsContent = document.getElementById('product-details-content');
 const checkoutContent = document.getElementById('checkout-content');
 
@@ -324,9 +326,9 @@ const checkoutContent = document.getElementById('checkout-content');
 document.addEventListener('DOMContentLoaded', () => {
     initTheme();
     initCart();
-    renderCategories();
     renderFeaturedProducts();
     renderTrendingProducts();
+    renderAllCategories();
     initEventListeners();
     
     // Hide splash screen after animation
@@ -410,36 +412,36 @@ function renderCartItems() {
     if (cart.length === 0) {
         cartItemsContainer.innerHTML = `
             <div class="text-center py-12">
-                <svg class="w-16 h-16 mx-auto text-gray-300 dark:text-gray-600 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="w-16 h-16 mx-auto text-gray-500 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
                 </svg>
-                <p class="text-gray-500 dark:text-gray-400">Your cart is empty</p>
+                <p class="text-gray-400">Your cart is empty</p>
             </div>
         `;
         return;
     }
 
     cartItemsContainer.innerHTML = cart.map(item => `
-        <div class="flex gap-4 bg-gray-50 dark:bg-gray-700 rounded-lg p-3 animate-slide-up">
+        <div class="flex gap-4 glass-card rounded-lg p-3 animate-slide-up">
             <img src="${item.image}" alt="${item.name}" class="w-20 h-20 object-cover rounded-lg">
             <div class="flex-1">
-                <h4 class="font-semibold text-gray-800 dark:text-white text-sm line-clamp-2">${item.name}</h4>
-                <p class="text-amber-500 font-bold mt-1">₹${item.price.toLocaleString()}</p>
+                <h4 class="font-semibold text-white text-sm line-clamp-2">${item.name}</h4>
+                <p class="text-cyan-400 font-bold mt-1">₹${item.price.toLocaleString()}</p>
                 <div class="flex items-center gap-2 mt-2">
-                    <button onclick="updateQuantity(${item.id}, -1)" class="w-8 h-8 bg-gray-200 dark:bg-gray-600 rounded-full flex items-center justify-center hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <button onclick="updateQuantity(${item.id}, -1)" class="w-8 h-8 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-colors">
+                        <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"></path>
                         </svg>
                     </button>
-                    <span class="font-semibold text-gray-800 dark:text-white">${item.quantity}</span>
-                    <button onclick="updateQuantity(${item.id}, 1)" class="w-8 h-8 bg-gray-200 dark:bg-gray-600 rounded-full flex items-center justify-center hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <span class="font-semibold text-white">${item.quantity}</span>
+                    <button onclick="updateQuantity(${item.id}, 1)" class="w-8 h-8 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-colors">
+                        <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
                         </svg>
                     </button>
                 </div>
             </div>
-            <button onclick="removeFromCart(${item.id})" class="text-red-500 hover:text-red-600 transition-colors">
+            <button onclick="removeFromCart(${item.id})" class="text-red-400 hover:text-red-300 transition-colors">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
                 </svg>
@@ -467,11 +469,29 @@ function isInWishlist(productId) {
 
 // Render Categories
 function renderCategories() {
+    if (!categoriesContainer) return;
     categoriesContainer.innerHTML = categories.map((category, index) => `
         <div class="category-card flex-shrink-0 w-24 md:w-32 cursor-pointer transition-transform duration-300 animate-slide-up" style="animation-delay: ${index * 0.05}s" onclick="filterByCategory('${category.name}')">
-            <div class="bg-gradient-to-br ${category.color} rounded-2xl p-4 md:p-6 text-center shadow-lg">
-                <span class="text-3xl md:text-4xl">${category.icon}</span>
-                <p class="text-white text-xs md:text-sm font-medium mt-2 line-clamp-2">${category.name}</p>
+            <div class="bg-gradient-to-br ${category.gradient} rounded-2xl p-4 md:p-6 text-center shadow-lg relative overflow-hidden">
+                <div class="absolute inset-0 bg-white/10 opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
+                <span class="text-3xl md:text-4xl relative z-10">${category.icon}</span>
+                <p class="text-white text-xs md:text-sm font-medium mt-2 line-clamp-2 relative z-10">${category.name}</p>
+            </div>
+        </div>
+    `).join('');
+}
+
+// Render All Categories for Categories Page
+function renderAllCategories() {
+    if (!allCategoriesContainer) return;
+    allCategoriesContainer.innerHTML = categories.map((category, index) => `
+        <div class="category-card cursor-pointer animate-slide-up" style="animation-delay: ${index * 0.05}s" onclick="filterByCategory('${category.name}')">
+            <div class="glass-card rounded-2xl p-6 flex flex-col items-center gap-3 relative overflow-hidden group">
+                <div class="absolute inset-0 bg-gradient-to-br ${category.gradient} opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
+                <div class="relative z-10">
+                    <span class="text-4xl md:text-5xl">${category.icon}</span>
+                </div>
+                <span class="text-white text-sm md:text-base font-medium text-center relative z-10">${category.name}</span>
             </div>
         </div>
     `).join('');
@@ -491,33 +511,33 @@ function renderTrendingProducts() {
 function createProductCard(product, index) {
     const isWishlisted = isInWishlist(product.id);
     return `
-        <div class="product-card bg-white dark:bg-gray-800 rounded-2xl shadow-md overflow-hidden transition-all duration-300 animate-slide-up cursor-pointer" style="animation-delay: ${index * 0.05}s" onclick="showProductDetails(${product.id})">
+        <div class="product-card glass-card rounded-2xl overflow-hidden transition-all duration-300 animate-slide-up cursor-pointer" style="animation-delay: ${index * 0.05}s" onclick="showProductDetails(${product.id})">
             <div class="relative">
                 <img src="${product.image}" alt="${product.name}" class="w-full h-40 md:h-48 object-cover">
-                <div class="absolute top-2 left-2 bg-red-500 text-white text-xs px-2 py-1 rounded-full font-semibold">
+                <div class="absolute top-2 left-2 bg-gradient-to-r from-purple-600 to-cyan-400 text-white text-xs px-2 py-1 rounded-full font-semibold shadow-lg">
                     -${product.discount}%
                 </div>
-                <button onclick="event.stopPropagation(); toggleWishlist(${product.id})" class="absolute top-2 right-2 w-8 h-8 bg-white dark:bg-gray-700 rounded-full flex items-center justify-center shadow-md hover:scale-110 transition-transform">
-                    <svg class="w-5 h-5 ${isWishlisted ? 'text-red-500 fill-current' : 'text-gray-400'}" fill="${isWishlisted ? 'currentColor' : 'none'}" stroke="currentColor" viewBox="0 0 24 24">
+                <button onclick="event.stopPropagation(); toggleWishlist(${product.id})" class="absolute top-2 right-2 w-8 h-8 glass-card rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform">
+                    <svg class="w-5 h-5 ${isWishlisted ? 'text-cyan-400 fill-current' : 'text-gray-400'}" fill="${isWishlisted ? 'currentColor' : 'none'}" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
                     </svg>
                 </button>
             </div>
             <div class="p-3 md:p-4">
-                <h3 class="font-semibold text-gray-800 dark:text-white text-sm md:text-base line-clamp-2 mb-2">${product.name}</h3>
+                <h3 class="font-semibold text-white text-sm md:text-base line-clamp-2 mb-2">${product.name}</h3>
                 <div class="flex items-center gap-1 mb-2">
-                    <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                    <svg class="w-4 h-4 text-cyan-400" fill="currentColor" viewBox="0 0 20 20">
                         <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
                     </svg>
-                    <span class="text-xs text-gray-600 dark:text-gray-400">${product.rating} (${product.reviews})</span>
+                    <span class="text-xs text-gray-400">${product.rating} (${product.reviews})</span>
                 </div>
                 <div class="flex items-center justify-between mb-3">
                     <div>
-                        <span class="text-lg font-bold text-amber-500">₹${product.price.toLocaleString()}</span>
-                        <span class="text-sm text-gray-400 line-through ml-2">₹${product.originalPrice.toLocaleString()}</span>
+                        <span class="text-lg font-bold text-cyan-400">₹${product.price.toLocaleString()}</span>
+                        <span class="text-sm text-gray-500 line-through ml-2">₹${product.originalPrice.toLocaleString()}</span>
                     </div>
                 </div>
-                <button onclick="event.stopPropagation(); addToCart(${product.id})" class="w-full btn-primary py-2 rounded-full text-white text-sm font-semibold">
+                <button onclick="event.stopPropagation(); addToCart(${product.id})" class="w-full btn-primary py-2 rounded-full text-white text-sm font-semibold shadow-lg">
                     Add to Cart
                 </button>
             </div>
@@ -536,12 +556,12 @@ function showProductDetails(productId) {
     productDetailsContent.innerHTML = `
         <div class="grid md:grid-cols-2 gap-8">
             <div>
-                <div class="bg-gray-100 dark:bg-gray-700 rounded-2xl p-8 mb-4">
+                <div class="glass-card rounded-2xl p-8 mb-4">
                     <img src="${product.image}" alt="${product.name}" class="w-full h-64 md:h-96 object-contain">
                 </div>
                 <div class="flex gap-2 overflow-x-auto hide-scrollbar">
                     ${[1, 2, 3, 4].map(i => `
-                        <div class="flex-shrink-0 w-20 h-20 bg-gray-100 dark:bg-gray-700 rounded-lg overflow-hidden cursor-pointer hover:ring-2 hover:ring-amber-500 transition-all">
+                        <div class="flex-shrink-0 w-20 h-20 glass-card rounded-lg overflow-hidden cursor-pointer hover:ring-2 hover:ring-cyan-400 transition-all">
                             <img src="${product.image}" alt="${product.name}" class="w-full h-full object-cover">
                         </div>
                     `).join('')}
@@ -549,40 +569,40 @@ function showProductDetails(productId) {
             </div>
             <div>
                 <div class="flex items-start justify-between mb-4">
-                    <span class="bg-amber-100 dark:bg-amber-900 text-amber-600 dark:text-amber-400 text-xs px-3 py-1 rounded-full font-medium">${product.category}</span>
-                    <button onclick="toggleWishlist(${product.id})" class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors">
-                        <svg class="w-6 h-6 ${isWishlisted ? 'text-red-500 fill-current' : 'text-gray-400'}" fill="${isWishlisted ? 'currentColor' : 'none'}" stroke="currentColor" viewBox="0 0 24 24">
+                    <span class="bg-gradient-to-r from-purple-600 to-cyan-400 text-white text-xs px-3 py-1 rounded-full font-medium">${product.category}</span>
+                    <button onclick="toggleWishlist(${product.id})" class="p-2 glass-card rounded-full transition-colors">
+                        <svg class="w-6 h-6 ${isWishlisted ? 'text-cyan-400 fill-current' : 'text-gray-400'}" fill="${isWishlisted ? 'currentColor' : 'none'}" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
                         </svg>
                     </button>
                 </div>
-                <h1 class="text-2xl md:text-3xl font-bold text-gray-800 dark:text-white mb-4">${product.name}</h1>
+                <h1 class="text-2xl md:text-3xl font-bold text-white mb-4">${product.name}</h1>
                 <div class="flex items-center gap-4 mb-6">
                     <div class="flex items-center gap-1">
                         ${[1, 2, 3, 4, 5].map(i => `
-                            <svg class="w-5 h-5 ${i <= Math.floor(product.rating) ? 'text-yellow-400' : 'text-gray-300'}" fill="currentColor" viewBox="0 0 20 20">
+                            <svg class="w-5 h-5 ${i <= Math.floor(product.rating) ? 'text-cyan-400' : 'text-gray-600'}" fill="currentColor" viewBox="0 0 20 20">
                                 <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
                             </svg>
                         `).join('')}
                     </div>
-                    <span class="text-gray-600 dark:text-gray-400">${product.rating} (${product.reviews} reviews)</span>
+                    <span class="text-gray-400">${product.rating} (${product.reviews} reviews)</span>
                 </div>
                 <div class="mb-6">
                     <div class="flex items-center gap-3 mb-2">
-                        <span class="text-3xl font-bold text-amber-500">₹${product.price.toLocaleString()}</span>
-                        <span class="text-xl text-gray-400 line-through">₹${product.originalPrice.toLocaleString()}</span>
-                        <span class="bg-red-500 text-white text-sm px-2 py-1 rounded-full">${product.discount}% OFF</span>
+                        <span class="text-3xl font-bold text-cyan-400">₹${product.price.toLocaleString()}</span>
+                        <span class="text-xl text-gray-500 line-through">₹${product.originalPrice.toLocaleString()}</span>
+                        <span class="bg-gradient-to-r from-purple-600 to-cyan-400 text-white text-sm px-2 py-1 rounded-full">${product.discount}% OFF</span>
                     </div>
-                    <p class="text-green-500 text-sm">In Stock (${product.stock} available)</p>
+                    <p class="text-cyan-400 text-sm">In Stock (${product.stock} available)</p>
                 </div>
-                <p class="text-gray-600 dark:text-gray-400 mb-6">${product.description}</p>
+                <p class="text-gray-400 mb-6">${product.description}</p>
                 
                 ${product.colors.length > 0 ? `
                 <div class="mb-6">
-                    <h3 class="font-semibold text-gray-800 dark:text-white mb-3">Color</h3>
+                    <h3 class="font-semibold text-white mb-3">Color</h3>
                     <div class="flex gap-2">
                         ${product.colors.map((color, i) => `
-                            <button class="px-4 py-2 border-2 ${i === 0 ? 'border-amber-500' : 'border-gray-200 dark:border-gray-600'} rounded-lg text-sm text-gray-700 dark:text-gray-300 hover:border-amber-500 transition-colors">
+                            <button class="px-4 py-2 border-2 ${i === 0 ? 'border-cyan-400' : 'border-white/20'} rounded-lg text-sm text-white hover:border-cyan-400 transition-colors">
                                 ${color}
                             </button>
                         `).join('')}
@@ -592,10 +612,10 @@ function showProductDetails(productId) {
                 
                 ${product.sizes.length > 0 ? `
                 <div class="mb-6">
-                    <h3 class="font-semibold text-gray-800 dark:text-white mb-3">Size</h3>
+                    <h3 class="font-semibold text-white mb-3">Size</h3>
                     <div class="flex gap-2">
                         ${product.sizes.map((size, i) => `
-                            <button class="w-12 h-12 border-2 ${i === 0 ? 'border-amber-500' : 'border-gray-200 dark:border-gray-600'} rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 hover:border-amber-500 transition-colors">
+                            <button class="w-12 h-12 border-2 ${i === 0 ? 'border-cyan-400' : 'border-white/20'} rounded-lg text-sm font-medium text-white hover:border-cyan-400 transition-colors">
                                 ${size}
                             </button>
                         `).join('')}
@@ -604,36 +624,36 @@ function showProductDetails(productId) {
                 ` : ''}
                 
                 <div class="flex gap-4 mb-8">
-                    <button onclick="addToCart(${product.id})" class="flex-1 btn-primary py-3 rounded-full text-white font-semibold">
+                    <button onclick="addToCart(${product.id})" class="flex-1 btn-primary py-3 rounded-full text-white font-semibold shadow-lg">
                         Add to Cart
                     </button>
-                    <button onclick="buyNow(${product.id})" class="flex-1 bg-gray-800 dark:bg-gray-600 text-white py-3 rounded-full font-semibold hover:bg-gray-700 dark:hover:bg-gray-500 transition-colors">
+                    <button onclick="buyNow(${product.id})" class="flex-1 bg-white/10 border border-white/20 text-white py-3 rounded-full font-semibold hover:bg-white/20 transition-colors">
                         Buy Now
                     </button>
                 </div>
                 
-                <div class="border-t border-gray-200 dark:border-gray-700 pt-6">
+                <div class="border-t border-white/10 pt-6">
                     <div class="grid grid-cols-2 gap-4">
                         <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 bg-amber-100 dark:bg-amber-900 rounded-full flex items-center justify-center">
-                                <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <div class="w-10 h-10 bg-cyan-400/20 rounded-full flex items-center justify-center">
+                                <svg class="w-5 h-5 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"></path>
                                 </svg>
                             </div>
                             <div>
-                                <p class="font-semibold text-gray-800 dark:text-white text-sm">Free Delivery</p>
-                                <p class="text-xs text-gray-500">Orders over ₹999</p>
+                                <p class="font-semibold text-white text-sm">Free Delivery</p>
+                                <p class="text-xs text-gray-400">Orders over ₹999</p>
                             </div>
                         </div>
                         <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center">
-                                <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <div class="w-10 h-10 bg-purple-400/20 rounded-full flex items-center justify-center">
+                                <svg class="w-5 h-5 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
                                 </svg>
                             </div>
                             <div>
-                                <p class="font-semibold text-gray-800 dark:text-white text-sm">Secure Payment</p>
-                                <p class="text-xs text-gray-500">100% Protected</p>
+                                <p class="font-semibold text-white text-sm">Secure Payment</p>
+                                <p class="text-xs text-gray-400">100% Protected</p>
                             </div>
                         </div>
                     </div>
@@ -643,7 +663,7 @@ function showProductDetails(productId) {
         
         <!-- Similar Products -->
         <div class="mt-12">
-            <h3 class="text-xl md:text-2xl font-bold text-gray-800 dark:text-white mb-6">Similar Products</h3>
+            <h3 class="text-xl md:text-2xl font-bold text-white mb-6">Similar Products</h3>
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                 ${products.filter(p => p.category === product.category && p.id !== product.id).slice(0, 4).map((p, i) => createProductCard(p, i)).join('')}
             </div>
@@ -667,92 +687,83 @@ function showCheckout() {
     checkoutContent.innerHTML = `
         <div class="grid md:grid-cols-2 gap-8">
             <!-- Order Summary -->
-            <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-md">
-                <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-6">Order Summary</h3>
+            <div class="glass-card rounded-2xl p-6">
+                <h3 class="text-xl font-bold text-white mb-6">Order Summary</h3>
                 <div class="space-y-4 mb-6">
                     ${cart.map(item => `
                         <div class="flex gap-4">
                             <img src="${item.image}" alt="${item.name}" class="w-16 h-16 object-cover rounded-lg">
                             <div class="flex-1">
-                                <h4 class="font-semibold text-gray-800 dark:text-white text-sm line-clamp-2">${item.name}</h4>
-                                <p class="text-gray-500 text-sm">Qty: ${item.quantity}</p>
+                                <h4 class="font-semibold text-white text-sm line-clamp-2">${item.name}</h4>
+                                <p class="text-gray-400 text-sm">Qty: ${item.quantity}</p>
                             </div>
-                            <p class="font-bold text-amber-500">₹${(item.price * item.quantity).toLocaleString()}</p>
+                            <p class="font-bold text-cyan-400">₹${(item.price * item.quantity).toLocaleString()}</p>
                         </div>
                     `).join('')}
                 </div>
-                <div class="border-t border-gray-200 dark:border-gray-700 pt-4 space-y-2">
-                    <div class="flex justify-between text-gray-600 dark:text-gray-400">
+                <div class="border-t border-white/10 pt-4 space-y-2">
+                    <div class="flex justify-between text-gray-400">
                         <span>Subtotal</span>
                         <span>₹${subtotal.toLocaleString()}</span>
                     </div>
-                    <div class="flex justify-between text-gray-600 dark:text-gray-400">
+                    <div class="flex justify-between text-gray-400">
                         <span>Delivery</span>
                         <span>${delivery === 0 ? 'FREE' : '₹' + delivery}</span>
                     </div>
-                    <div class="flex justify-between text-xl font-bold text-gray-800 dark:text-white pt-2">
+                    <div class="flex justify-between text-xl font-bold text-white pt-2">
                         <span>Total</span>
-                        <span class="text-amber-500">₹${total.toLocaleString()}</span>
+                        <span class="text-cyan-400">₹${total.toLocaleString()}</span>
                     </div>
                 </div>
             </div>
             
             <!-- Payment Details -->
-            <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-md">
-                <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-6">Payment Method</h3>
+            <div class="glass-card rounded-2xl p-6">
+                <h3 class="text-xl font-bold text-white mb-6">Payment Method</h3>
                 
                 <!-- Delivery Address -->
                 <div class="mb-6">
-                    <h4 class="font-semibold text-gray-800 dark:text-white mb-3">Delivery Address</h4>
+                    <h4 class="font-semibold text-white mb-3">Delivery Address</h4>
                     <div class="space-y-3">
-                        <input type="text" placeholder="Full Name" class="w-full px-4 py-3 bg-gray-100 dark:bg-gray-700 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 transition-colors">
-                        <input type="text" placeholder="Phone Number" class="w-full px-4 py-3 bg-gray-100 dark:bg-gray-700 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 transition-colors">
-                        <textarea placeholder="Address" rows="3" class="w-full px-4 py-3 bg-gray-100 dark:bg-gray-700 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 transition-colors resize-none"></textarea>
+                        <input type="text" placeholder="Full Name" class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-sm text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent transition-all">
+                        <input type="text" placeholder="Phone Number" class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-sm text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent transition-all">
+                        <textarea placeholder="Address" rows="3" class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-sm text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent transition-all resize-none"></textarea>
                         <div class="grid grid-cols-2 gap-3">
-                            <input type="text" placeholder="City" class="w-full px-4 py-3 bg-gray-100 dark:bg-gray-700 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 transition-colors">
-                            <input type="text" placeholder="PIN Code" class="w-full px-4 py-3 bg-gray-100 dark:bg-gray-700 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 transition-colors">
+                            <input type="text" placeholder="City" class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-sm text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent transition-all">
+                            <input type="text" placeholder="PIN Code" class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-sm text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent transition-all">
                         </div>
                     </div>
                 </div>
                 
                 <!-- Payment Options -->
                 <div class="mb-6">
-                    <h4 class="font-semibold text-gray-800 dark:text-white mb-3">Select Payment Method</h4>
+                    <h4 class="font-semibold text-white mb-3">Payment Method</h4>
                     <div class="space-y-3">
-                        <label class="flex items-center gap-3 p-4 border-2 border-amber-500 rounded-lg cursor-pointer">
-                            <input type="radio" name="payment" value="upi" checked class="w-5 h-5 text-amber-500">
+                        <label class="flex items-center gap-3 p-4 bg-white/10 border border-white/20 rounded-lg cursor-pointer hover:border-cyan-400/50 transition-colors">
+                            <input type="radio" name="payment" value="upi" class="w-5 h-5 text-cyan-400 focus:ring-cyan-400" checked>
                             <div class="flex-1">
-                                <p class="font-semibold text-gray-800 dark:text-white">UPI Payment</p>
-                                <p class="text-xs text-gray-500">Pay using any UPI app</p>
-                            </div>
-                            <div class="flex gap-2">
-                                <span class="text-2xl">📱</span>
+                                <p class="text-white font-medium">UPI</p>
+                                <p class="text-gray-400 text-sm">Pay using any UPI app</p>
                             </div>
                         </label>
-                        <label class="flex items-center gap-3 p-4 border-2 border-gray-200 dark:border-gray-700 rounded-lg cursor-pointer hover:border-amber-500 transition-colors">
-                            <input type="radio" name="payment" value="card" class="w-5 h-5 text-amber-500">
+                        <label class="flex items-center gap-3 p-4 bg-white/10 border border-white/20 rounded-lg cursor-pointer hover:border-cyan-400/50 transition-colors">
+                            <input type="radio" name="payment" value="card" class="w-5 h-5 text-cyan-400 focus:ring-cyan-400">
                             <div class="flex-1">
-                                <p class="font-semibold text-gray-800 dark:text-white">Credit/Debit Card</p>
-                                <p class="text-xs text-gray-500">Visa, Mastercard, RuPay</p>
-                            </div>
-                            <div class="flex gap-2">
-                                <span class="text-2xl">💳</span>
+                                <p class="text-white font-medium">Credit/Debit Card</p>
+                                <p class="text-gray-400 text-sm">Visa, Mastercard, RuPay</p>
                             </div>
                         </label>
-                        <label class="flex items-center gap-3 p-4 border-2 border-gray-200 dark:border-gray-700 rounded-lg cursor-pointer hover:border-amber-500 transition-colors">
-                            <input type="radio" name="payment" value="cod" class="w-5 h-5 text-amber-500">
+                        <label class="flex items-center gap-3 p-4 bg-white/10 border border-white/20 rounded-lg cursor-pointer hover:border-cyan-400/50 transition-colors">
+                            <input type="radio" name="payment" value="cod" class="w-5 h-5 text-cyan-400 focus:ring-cyan-400">
                             <div class="flex-1">
-                                <p class="font-semibold text-gray-800 dark:text-white">Cash on Delivery</p>
-                                <p class="text-xs text-gray-500">Pay when you receive</p>
-                            </div>
-                            <div class="flex gap-2">
-                                <span class="text-2xl">💵</span>
+                                <p class="text-white font-medium">Cash on Delivery</p>
+                                <p class="text-gray-400 text-sm">Pay when you receive</p>
                             </div>
                         </label>
                     </div>
                 </div>
                 
-                <button onclick="placeOrder()" class="w-full btn-primary py-3 rounded-full text-white font-semibold">
+                <button onclick="placeOrder()" class="w-full btn-primary py-3 rounded-full text-white font-semibold shadow-lg">
                     Place Order - ₹${total.toLocaleString()}
                 </button>
                 
@@ -786,6 +797,9 @@ function showPage(pageName) {
         document.getElementById('product-details-page').classList.remove('hidden');
     } else if (pageName === 'checkout') {
         document.getElementById('checkout-page').classList.remove('hidden');
+    } else if (pageName === 'categories') {
+        document.getElementById('categories-page').classList.remove('hidden');
+        renderAllCategories();
     }
     
     // Update bottom nav
@@ -829,11 +843,11 @@ function filterByCategory(categoryName) {
 // Toast Notifications
 function showToast(message, type = 'info') {
     const toast = document.createElement('div');
-    toast.className = `toast flex items-center gap-3 px-4 py-3 rounded-lg shadow-lg ${
-        type === 'success' ? 'bg-green-500' : type === 'error' ? 'bg-red-500' : 'bg-blue-500'
+    toast.className = `toast flex items-center gap-3 px-4 py-3 rounded-lg shadow-lg glass-card ${
+        type === 'success' ? 'border-l-4 border-cyan-400' : type === 'error' ? 'border-l-4 border-red-400' : 'border-l-4 border-purple-400'
     } text-white`;
     toast.innerHTML = `
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg class="w-5 h-5 ${type === 'success' ? 'text-cyan-400' : type === 'error' ? 'text-red-400' : 'text-purple-400'}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             ${type === 'success' 
                 ? '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>'
                 : '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>'
@@ -889,6 +903,8 @@ function initEventListeners() {
                 showPage('home');
                 renderFeaturedProducts();
                 renderTrendingProducts();
+            } else if (page === 'categories') {
+                showPage('categories');
             } else {
                 showToast('Coming soon!', 'info');
             }
@@ -897,6 +913,7 @@ function initEventListeners() {
     
     // Back to Home
     backToHomeBtn.addEventListener('click', () => showPage('home'));
+    backToHomeFromCategoriesBtn.addEventListener('click', () => showPage('home'));
 }
 
 // Make functions globally available
